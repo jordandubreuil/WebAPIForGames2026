@@ -7,6 +7,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 
+//Location of Routes
+const highScoreRoutes = require("./routes/highscores");
+
 //Quick Test that env Variables are available
 if(!MONGO_URI){
     console.error("Missing Database Connection");
@@ -105,6 +108,10 @@ app.get("/api/gamesprofile/:game", async (req,res)=>{
     console.log(gameentry);
     res.json(gameentry);
 });
+
+//Connecting with a router module - Week 3
+app.use("/api/highscores", highScoreRoutes);
+
 
 //Command that starts the server
 // app.listen(PORT, ()=>{

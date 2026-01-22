@@ -20,14 +20,52 @@ router.post("/", async (req, res)=>{
 
 //Get route for requesting data from database
 router.get("/", async (req,res)=>{
+    console.log("fetching scores")
     try{
         const scores = await HighScore.find()
         .sort({score:-1, createdAt:1})
         .limit(10);
         res.json(scores);
+        console.log(scores);
     }catch(err){
         res.status(500).json({ok:false, error: "Failed to fetch High Scores"});
     }
 });
+
+//Delete route (Deletes by id)
+router.delete("/:id", async (req,res)=>{
+    try{
+        const {id} = req.params;
+        const deleted = await HighScore.findByIdAndDelete(id);
+
+        if(!deleted){
+            return res.status(404).json({ok:false, error:"Score not found"})
+        }
+
+        res.json({ok:true, deletedId:id});
+
+    }catch(err){
+        res.status(400).json({ok:false, error:"Delete failed"});
+    }
+});
+
+//get rout for the edit page
+router.get("/:id", async (req,res)=>{
+    console.log("fetch for edit");
+    try{
+        const score = await HighScore.findById(req.params.id);
+
+        if(!score){
+            return res.status(404).json({ok:false, error:"Not found"})
+        }
+        console.log(score);
+        res.json(score);
+    }catch{
+        return res.status(400).json({ok:false, error:"Invalid Id"})
+    }
+});
+
+
+///======Next week need to add PUT rout  for update
 
 module.exports = router;

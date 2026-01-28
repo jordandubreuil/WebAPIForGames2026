@@ -28,7 +28,7 @@ form.addEventListener("submit", async (e)=>{
         body:JSON.stringify({playername, score, level}),
     });
 
-    window.location.href = "/highscores";
+    window.location.href = "/highscores.html";
 });
 
 cancelBtn.addEventListener("click", ()=>{

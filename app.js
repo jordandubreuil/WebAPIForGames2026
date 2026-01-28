@@ -9,6 +9,8 @@ const MONGO_URI = process.env.MONGO_URI;
 
 //Location of Routes
 const highScoreRoutes = require("./routes/highscores");
+const authRoutes = require("./routes/auth");
+app.use("/api/auth", authRoutes);
 
 //Quick Test that env Variables are available
 if(!MONGO_URI){
@@ -111,6 +113,7 @@ app.get("/api/gamesprofile/:game", async (req,res)=>{
 
 //Connecting with a router module - Week 3
 app.use("/api/highscores", highScoreRoutes);
+
 
 
 //Command that starts the server

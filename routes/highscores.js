@@ -26,7 +26,7 @@ router.post("/", async (req, res)=>{
 
 //Get route for requesting data from database
 router.get("/", async (req,res)=>{
-    //console.log("fetching scores")
+    console.log("fetching scores", req)
     try{
         const userId = req.user.sub;
         const scores = await HighScore.find({userId})
@@ -35,6 +35,7 @@ router.get("/", async (req,res)=>{
         res.json(scores);
         //console.log(scores);
     }catch(err){
+        console.log(err);
         res.status(500).json({ok:false, error: "Failed to fetch High Scores"});
     }
 });

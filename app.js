@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 //Connecting with a router module - Week 3 - Week 4 updated
-app.use("/api/highscores", require("./routes/highscores"));
+app.use("/api/highscores", highScoreRoutes);
 
 //Quick Test that env Variables are available
 if(!MONGO_URI){

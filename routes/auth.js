@@ -9,10 +9,10 @@ if(!JWT_SECRET)throw new Error("Missing JWT Secret");
 
 //Register new users
 router.post("/register", async (req,res)=>{
-    console.log("Authentication Route")
+    console.log("Authentication Route", req.body);
     try{
         const {username, password} = req.body;
-
+        console(username, password);
         if(typeof username !== "string" || typeof password !== "string"){
             return res.status(400).json({ok:false, error:"username and password required"});
         }

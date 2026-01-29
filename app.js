@@ -10,7 +10,17 @@ const MONGO_URI = process.env.MONGO_URI;
 //Location of Routes
 const highScoreRoutes = require("./routes/highscores");
 const authRoutes = require("./routes/auth");
+
+
+
+//Set up static folder for files
+app.use(express.static(path.join(__dirname,"public")));
+app.use(express.urlencoded({extended:false}));
+app.use(express.json());
+
 app.use("/api/auth", authRoutes);
+//Connecting with a router module - Week 3 - Week 4 updated
+app.use("/api/highscores", require("./routes/highscores"));
 
 //Quick Test that env Variables are available
 if(!MONGO_URI){
@@ -28,9 +38,6 @@ async function connectToMongo(){
     }
 }
 
-//Set up static folder for files
-app.use(express.static(path.join(__dirname,"public")));
-app.use(express.json());
 
 //Main Route for Server 
 app.get("/", (req,res)=>{
@@ -111,8 +118,6 @@ app.get("/api/gamesprofile/:game", async (req,res)=>{
     res.json(gameentry);
 });
 
-//Connecting with a router module - Week 3
-app.use("/api/highscores", highScoreRoutes);
 
 
 

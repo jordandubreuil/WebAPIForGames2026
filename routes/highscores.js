@@ -1,15 +1,21 @@
 const express = require("express");
 const HighScore = require("../models/HighScore");
+const requireAuth = require("../middleware/requireAuth");
 
 const router = express.Router();
+
+//All routes below require login
+router.use(requireAuth);
 
 //Post route for adding player scores
 router.post("/", async (req, res)=>{
     //console.log("Working")
     try{
+        
+      const userId = req.user.sub;
       const {playername, score, level} = req.body;
 
-      const createdScore = await HighScore.create({playername, score, level});
+      const createdScore = await HighScore.create({userId, playername, score, level});
       
       res.status(201).json({ok:true, createdScore});
         
@@ -22,7 +28,8 @@ router.post("/", async (req, res)=>{
 router.get("/", async (req,res)=>{
     //console.log("fetching scores")
     try{
-        const scores = await HighScore.find()
+        const userId = req.user.sub;
+        const scores = await HighScore.find({userId})
         .sort({score:-1, createdAt:1})
         .limit(10);
         res.json(scores);
@@ -35,8 +42,9 @@ router.get("/", async (req,res)=>{
 //Delete route (Deletes by id)
 router.delete("/:id", async (req,res)=>{
     try{
+        const userId = req.user.sub;
         const {id} = req.params;
-        const deleted = await HighScore.findByIdAndDelete(id);
+        const deleted = await HighScore.findByIdAndDelete({_id:id, userId});
 
         if(!deleted){
             return res.status(404).json({ok:false, error:"Score not found"})
@@ -72,6 +80,7 @@ router.put("/:id", async (req,res)=>{
     console.log(req.body)
     try{
 
+        const userId = req.user.sub;
         //Update High Score Entry
         const {id} = req.params;
 
@@ -90,7 +99,7 @@ router.put("/:id", async (req,res)=>{
             payload.level = req.body.level;
         }
 
-        const updatedEntry = await HighScore.findByIdAndUpdate(id,payload,{
+        const updatedEntry = await HighScore.findByIdAndUpdate({_id:id, userId},payload,{
             new:true,
             runValidators:true
         });

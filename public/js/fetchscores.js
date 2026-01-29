@@ -9,7 +9,7 @@ if(!token){
 function authHeaders(){
     return {
         "Content-Type":"application/json",
-        "Authorization":"Bearer" + token
+        "Authorization":"Bearer " + token
     }
 }
 
@@ -97,7 +97,9 @@ async function deleteScore(id){
     statusDisplay.textContent = "Deleting...";
 
     const res = await fetch(`/api/highscores/${id}`, {
-        method:"DELETE"});
+        method:"DELETE",
+        headers:{"Authorization": `Bearer ${token}`}
+    });
 
     if(!res.ok){
         statusDisplay.textContent = "Delete failed";

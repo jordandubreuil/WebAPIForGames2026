@@ -13,6 +13,7 @@ router.post("/", async (req, res)=>{
     try{
         
       const userId = req.user.sub;
+      //console.log(`User sub ${userId}`);
       const {playername, score, level} = req.body;
 
       const createdScore = await HighScore.create({userId, playername, score, level});
@@ -26,7 +27,7 @@ router.post("/", async (req, res)=>{
 
 //Get route for requesting data from database
 router.get("/", async (req,res)=>{
-    console.log("fetching scores", req)
+    //console.log("fetching scores", req.user.sub)
     try{
         const userId = req.user.sub;
         const scores = await HighScore.find({userId})
@@ -60,7 +61,7 @@ router.delete("/:id", async (req,res)=>{
 
 //get rout for the edit page
 router.get("/:id", async (req,res)=>{
-    //console.log("fetch for edit");
+    console.log("fetch for edit " + req.params.id);
     try{
         const score = await HighScore.findById(req.params.id);
 

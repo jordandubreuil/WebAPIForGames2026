@@ -24,7 +24,7 @@ async function loadScores(){
             window.location.href = "/login.html";
             return;
         }
-
+       
         const scores = await res.json();
         
         if(scores.length === 0){
@@ -54,6 +54,7 @@ async function loadScores(){
             });
 
             editBtn.addEventListener("click", async ()=>{
+               console.log(encodeURIComponent(score._id)); 
                window.location.href = `/edit.html?id=${encodeURIComponent(score._id)}`;
             });
 
@@ -76,6 +77,8 @@ form.addEventListener("submit", async (e)=>{
     const playername = document.getElementById("playername").value;
     const score = document.getElementById("score").value;
     const level = document.getElementById("level").value;
+
+   // console.log(authHeaders());
 
     statusDisplay.textContent = "Submitting new score...";
 
@@ -107,6 +110,11 @@ async function deleteScore(id){
 
     statusDisplay.textContent = "Score Deleted";
 }
+
+document.getElementById("logoutBtn").addEventListener("click", ()=>{
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+});
 
 loadScores();
 
